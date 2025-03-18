@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Analizador Léxico C++</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Analizador Léxico C++</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".cpp" required>
+        <button type="submit">Analizar</button>
+    </form>
+
+    {% if tokens %}
+    <h2>Resultado:</h2>
+    <table>
+        <tr>
+            <th>Tipo</th>
+            <th>Lexema</th>
+            <th>Línea</th>
+        </tr>
+        {% for token in tokens %}
+        <tr>
+            <td>{{ token[0] }}</td>
+            <td>{{ token[1] }}</td>
+            <td>{{ token[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+</html>
