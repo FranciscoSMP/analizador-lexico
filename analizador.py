@@ -54,7 +54,7 @@ def analizar_codigo(codigo):
     coincidencia = obtener_token(codigo)
     while coincidencia:
         tipo = coincidencia.lastgroup  # Tipo de token detectado.
-        valor = coincidencia.group()  # Texto del token detectado.
+        valor = coincidencia.group()  # Texto del token detectado
         
         # Clasificación de tokens según su tipo.
         if tipo == 'NUMERO':
