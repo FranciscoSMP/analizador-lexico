@@ -1,23 +1,11 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 40px;
 }
 
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
+h1, h2 {
+    color: #343a40;
 }
 
-table {
-    margin-top: 20px;
-    width: 80%;
-}
-
-th, td {
-    padding: 8px;
-    text-align: center;
-}
-
-form {
-    margin-bottom: 20px;
+.animate__animated {
+    --animate-duration: 1.2s;
 }
