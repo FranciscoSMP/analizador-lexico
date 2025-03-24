@@ -27,27 +27,27 @@ def analizar_codigo(codigo):
         kind = mo.lastgroup
         value = mo.group()
         if kind == 'NUMBER':
-            tokens.append(('NUMBER', value, line_num))
+            tokens.append(('NUMERO', value, line_num))
         elif kind == 'ID':
             if value in keywords:
-                tokens.append(('KEYWORD', value, line_num))
+                tokens.append(('PLABRA CLAVE', value, line_num))
             else:
-                tokens.append(('IDENTIFIER', value, line_num))
+                tokens.append(('IDENTIFICADOR', value, line_num))
         elif kind == 'OP':
-            tokens.append(('OPERATOR', value, line_num))
+            tokens.append(('OPERADOR', value, line_num))
         elif kind == 'DELIM':
-            tokens.append(('DELIMITER', value, line_num))
+            tokens.append(('DELIMITADOR', value, line_num))
         elif kind == 'STRING':
             tokens.append(('STRING', value, line_num))
         elif kind == 'PREPROCESSOR':
-            tokens.append(('PREPROCESSOR', value.strip(), line_num))
+            tokens.append(('PREPROCESADOR', value.strip(), line_num))
         elif kind == 'NEWLINE':
             line_start = mo.end()
             line_num += 1
         elif kind == 'SKIP':
             pass
         elif kind == 'MISMATCH':
-            tokens.append(('UNKNOWN', value, line_num))
+            tokens.append(('DESCONOCIDO', value, line_num))
         pos = mo.end()
         mo = get_token(codigo, pos)
     return tokens
