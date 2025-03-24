@@ -61,7 +61,7 @@ def analizar_codigo(codigo):
             tokens.append(('NUMERO', valor, num_linea))
         elif tipo == 'IDENTIFICADOR':
             if valor in palabra_clave:
-                tokens.append(('PLABRA CLAVE', valor, num_linea))
+                tokens.append(('PALABRA CLAVE', valor, num_linea))
             else:
                 tokens.append(('IDENTIFICADOR', valor, num_linea))
         elif tipo == 'OPERADOR':
