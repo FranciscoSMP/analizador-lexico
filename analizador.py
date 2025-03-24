@@ -1,53 +1,53 @@
 import re
 
 def analizar_codigo(codigo):
-    keywords = {'int', 'if', 'return', 'using', 'namespace'}
-    operators = [r'\+\+', r'--', r'==', r'!=', r'<=', r'>=', r'&&', r'\|\|', r'<<', r'>>',
+    palabra_clave = {'int', 'if', 'return', 'using', 'namespace'}
+    operadores = [r'\+\+', r'--', r'==', r'!=', r'<=', r'>=', r'&&', r'\|\|', r'<<', r'>>',
                  r'\+', r'-', r'\*', r'/', r'%', r'=', r'<', r'>']
-    delimiters = {r';', r',', r'\(', r'\)', r'\{', r'\}', r'\[', r'\]'}
-    token_spec = [
-        ('NUMBER', r'\d+'),
-        ('ID', r'[A-Za-z_]\w*'),
-        ('OP', r'|'.join(sorted(operators, key=lambda x: -len(x)))),
-        ('DELIM', r'|'.join(delimiters)),
-        ('STRING', r'"[^"]*"'),
-        ('PREPROCESSOR', r'#\s*\w+'),
-        ('SKIP', r'[ \t]+'),
-        ('NEWLINE', r'\n'),
-        ('MISMATCH', r'.'),
+    delimitadores = {r';', r',', r'\(', r'\)', r'\{', r'\}', r'\[', r'\]'}
+    tipo_token = [
+        ('NUMERO', r'\d+'),
+        ('IDENTIFICADOR', r'[A-Za-z_]\w*'),
+        ('OPERADOR', r'|'.join(sorted(operadores, key=lambda x: -len(x)))),
+        ('DELIMITADOR', r'|'.join(delimitadores)),
+        ('CADENA', r'"[^"]*"'),
+        ('PREPROCESADOR', r'#\s*\w+'),
+        ('OMITIR', r'[ \t]+'),
+        ('NUEVA_LINEA', r'\n'),
+        ('NO_COINCIDE', r'.'),
     ]
-    tok_regex = '|'.join(f'(?P<{name}>{pattern})' for name, pattern in token_spec)
-    get_token = re.compile(tok_regex).match
-    line_num = 1
-    pos = line_start = 0
+    regex_token = '|'.join(f'(?P<{nombre}>{patron})' for nombre, patron in tipo_token)
+    obtener_token = re.compile(regex_token).match
+    num_linea = 1
+    posicion = inicio_linea = 0
     tokens = []
 
-    mo = get_token(codigo)
-    while mo:
-        kind = mo.lastgroup
-        value = mo.group()
-        if kind == 'NUMBER':
-            tokens.append(('NUMERO', value, line_num))
-        elif kind == 'ID':
-            if value in keywords:
-                tokens.append(('PLABRA CLAVE', value, line_num))
+    coincidencia = obtener_token(codigo)
+    while coincidencia:
+        tipo = coincidencia.lastgroup
+        valor = coincidencia.group()
+        if tipo == 'NUMERO':
+            tokens.append(('NUMERO', valor, num_linea))
+        elif tipo == 'IDENTIFICADOR':
+            if valor in palabra_clave:
+                tokens.append(('PLABRA CLAVE', valor, num_linea))
             else:
-                tokens.append(('IDENTIFICADOR', value, line_num))
-        elif kind == 'OP':
-            tokens.append(('OPERADOR', value, line_num))
-        elif kind == 'DELIM':
-            tokens.append(('DELIMITADOR', value, line_num))
-        elif kind == 'STRING':
-            tokens.append(('STRING', value, line_num))
-        elif kind == 'PREPROCESSOR':
-            tokens.append(('PREPROCESADOR', value.strip(), line_num))
-        elif kind == 'NEWLINE':
-            line_start = mo.end()
-            line_num += 1
-        elif kind == 'SKIP':
+                tokens.append(('IDENTIFICADOR', valor, num_linea))
+        elif tipo == 'OPERADOR':
+            tokens.append(('OPERADOR', valor, num_linea))
+        elif tipo == 'DELIMITADOR':
+            tokens.append(('DELIMITADOR', valor, num_linea))
+        elif tipo == 'CADENA':
+            tokens.append(('CADENA', valor, num_linea))
+        elif tipo == 'PREPROCESADOR':
+            tokens.append(('PREPROCESADOR', valor.strip(), num_linea))
+        elif tipo == 'NUEVA_LINEA':
+            inicio_linea = coincidencia.end()
+            num_linea += 1
+        elif tipo == 'OMITIR':
             pass
-        elif kind == 'MISMATCH':
-            tokens.append(('DESCONOCIDO', value, line_num))
-        pos = mo.end()
-        mo = get_token(codigo, pos)
+        elif tipo == 'NO_COINCIDE':
+            tokens.append(('DESCONOCIDO', valor, num_linea))
+        posicion = coincidencia.end()
+        coincidencia = obtener_token(codigo, posicion)
     return tokens
