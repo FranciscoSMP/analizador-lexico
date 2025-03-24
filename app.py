@@ -5,7 +5,7 @@ from analizador import analizar_codigo
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
-app.secret_key = 'clave_secreta_segura'  # Necesario para sesiones
+app.secret_key = 'clave_secreta_segura'  # Necesario para sesione
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 @app.route("/", methods=["GET", "POST"])
